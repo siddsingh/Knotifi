@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9E99DE8F1872562900DC5743 /* Ipad_Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9E99DE8E1872562900DC5743 /* Ipad_Storyboard.storyboard */; };
+		9E99DE911872567400DC5743 /* Iphone_Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9E99DE901872567400DC5743 /* Iphone_Storyboard.storyboard */; };
 		9E9D7DD218627C4700030BAE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E9D7DD118627C4700030BAE /* Foundation.framework */; };
 		9E9D7DD418627C4700030BAE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E9D7DD318627C4700030BAE /* CoreGraphics.framework */; };
 		9E9D7DD618627C4700030BAE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E9D7DD518627C4700030BAE /* UIKit.framework */; };
@@ -35,6 +37,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9E99DE8E1872562900DC5743 /* Ipad_Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Ipad_Storyboard.storyboard; sourceTree = "<group>"; };
+		9E99DE901872567400DC5743 /* Iphone_Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Iphone_Storyboard.storyboard; sourceTree = "<group>"; };
 		9E9D7DCE18627C4700030BAE /* Knotifi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Knotifi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E9D7DD118627C4700030BAE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9E9D7DD318627C4700030BAE /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -117,6 +121,8 @@
 			children = (
 				9E9D7DE218627C4700030BAE /* AppDelegate.h */,
 				9E9D7DE318627C4700030BAE /* AppDelegate.m */,
+				9E99DE8E1872562900DC5743 /* Ipad_Storyboard.storyboard */,
+				9E99DE901872567400DC5743 /* Iphone_Storyboard.storyboard */,
 				9E9D7DE818627C4700030BAE /* Images.xcassets */,
 				9E9D7DE518627C4700030BAE /* Knotifi.xcdatamodeld */,
 				9E9D7DDA18627C4700030BAE /* Supporting Files */,
@@ -229,6 +235,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				9E9D7DDE18627C4700030BAE /* InfoPlist.strings in Resources */,
+				9E99DE8F1872562900DC5743 /* Ipad_Storyboard.storyboard in Resources */,
+				9E99DE911872567400DC5743 /* Iphone_Storyboard.storyboard in Resources */,
 				9E9D7DE918627C4700030BAE /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -375,6 +383,7 @@
 				GCC_PREFIX_HEADER = "Knotifi/Knotifi-Prefix.pch";
 				INFOPLIST_FILE = "Knotifi/Knotifi-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -388,6 +397,7 @@
 				GCC_PREFIX_HEADER = "Knotifi/Knotifi-Prefix.pch";
 				INFOPLIST_FILE = "Knotifi/Knotifi-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -453,6 +463,7 @@
 				9E9D7E0218627C4800030BAE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9E9D7E0318627C4800030BAE /* Build configuration list for PBXNativeTarget "KnotifiTests" */ = {
 			isa = XCConfigurationList;
@@ -461,6 +472,7 @@
 				9E9D7E0518627C4800030BAE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

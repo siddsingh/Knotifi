@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>EC3C6958-C9F0-48DE-84FE-175BF189804F</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Knotifi</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>157A6F89-F2C1-4EAB-BA2C-AC4D6F0DA0B9</key>
+		<string>https://github.com/siddsingh/Knotifi.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Knotifi.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>157A6F89-F2C1-4EAB-BA2C-AC4D6F0DA0B9</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/siddsingh/Knotifi.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>157A6F89-F2C1-4EAB-BA2C-AC4D6F0DA0B9</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>157A6F89-F2C1-4EAB-BA2C-AC4D6F0DA0B9</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Knotifi</string>
+		</dict>
+	</array>
+</dict>
+</plist>
