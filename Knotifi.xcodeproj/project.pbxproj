@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		9E99DE8F1872562900DC5743 /* Ipad_Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9E99DE8E1872562900DC5743 /* Ipad_Storyboard.storyboard */; };
 		9E99DE911872567400DC5743 /* Iphone_Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9E99DE901872567400DC5743 /* Iphone_Storyboard.storyboard */; };
+		9E99DE94187635A000DC5743 /* KNTasksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E99DE93187635A000DC5743 /* KNTasksViewController.m */; };
 		9E9D7DD218627C4700030BAE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E9D7DD118627C4700030BAE /* Foundation.framework */; };
 		9E9D7DD418627C4700030BAE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E9D7DD318627C4700030BAE /* CoreGraphics.framework */; };
 		9E9D7DD618627C4700030BAE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E9D7DD518627C4700030BAE /* UIKit.framework */; };
@@ -39,6 +40,8 @@
 /* Begin PBXFileReference section */
 		9E99DE8E1872562900DC5743 /* Ipad_Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Ipad_Storyboard.storyboard; sourceTree = "<group>"; };
 		9E99DE901872567400DC5743 /* Iphone_Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Iphone_Storyboard.storyboard; sourceTree = "<group>"; };
+		9E99DE92187635A000DC5743 /* KNTasksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNTasksViewController.h; sourceTree = "<group>"; };
+		9E99DE93187635A000DC5743 /* KNTasksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNTasksViewController.m; sourceTree = "<group>"; };
 		9E9D7DCE18627C4700030BAE /* Knotifi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Knotifi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E9D7DD118627C4700030BAE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9E9D7DD318627C4700030BAE /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -121,10 +124,12 @@
 			children = (
 				9E9D7DE218627C4700030BAE /* AppDelegate.h */,
 				9E9D7DE318627C4700030BAE /* AppDelegate.m */,
+				9E99DE92187635A000DC5743 /* KNTasksViewController.h */,
+				9E99DE93187635A000DC5743 /* KNTasksViewController.m */,
 				9E99DE8E1872562900DC5743 /* Ipad_Storyboard.storyboard */,
 				9E99DE901872567400DC5743 /* Iphone_Storyboard.storyboard */,
-				9E9D7DE818627C4700030BAE /* Images.xcassets */,
 				9E9D7DE518627C4700030BAE /* Knotifi.xcdatamodeld */,
+				9E9D7DE818627C4700030BAE /* Images.xcassets */,
 				9E9D7DDA18627C4700030BAE /* Supporting Files */,
 			);
 			path = Knotifi;
@@ -256,6 +261,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9E99DE94187635A000DC5743 /* KNTasksViewController.m in Sources */,
 				9E9D7DE718627C4700030BAE /* Knotifi.xcdatamodeld in Sources */,
 				9E9D7DE418627C4700030BAE /* AppDelegate.m in Sources */,
 				9E9D7DE018627C4700030BAE /* main.m in Sources */,
