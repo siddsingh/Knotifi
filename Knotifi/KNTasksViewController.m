@@ -33,9 +33,27 @@
 
 #pragma mark - Nav and List Table Methods
 
+// Return headers for the table views
+-(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    
+    UITableViewCell *headerCell = nil;
+    
+    // If its the tasks nav table
+    if(tableView == self.tasksNavTable) {
+        headerCell = [tableView dequeueReusableCellWithIdentifier:@"TasksNavHeader"];
+    }
+    // If its the task list table
+    else {
+        headerCell = [tableView dequeueReusableCellWithIdentifier:@"TaskHeader"];
+    }
+    
+    return headerCell;
+}
+
 // Return number of sections in the table views
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    // There's only one section for both tables for now
     return 1;
 }
 
