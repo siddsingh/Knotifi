@@ -31,6 +31,45 @@
 	// Do any additional setup after loading the view.
 }
 
+#pragma mark - Nav and List Table Methods
+
+// Return number of sections in the table views
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+// Return number of rows in the table views
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 1;
+}
+
+// Return a cell configured to display a task or a task nav item
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // If tasks nav table
+    if(tableView == self.tasksNavTable) {
+        
+        static NSString *CellIdentifier = @"TasksNavCell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+        
+        return cell;
+    }
+    
+    // If tasks list table
+    else {
+        
+        static NSString *CellIdentifier = @"TaskCell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+        
+        return cell;
+    }
+    
+}
+
+#pragma mark - Unused Methods
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
