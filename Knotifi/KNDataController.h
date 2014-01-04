@@ -26,6 +26,9 @@
 // Controller containing results of queries to Core Data
 @property (strong, nonatomic) NSFetchedResultsController *resultsController;
 
-#pragma mark - Data read/write methods
+#pragma mark - Task Data Related
+
+// Insert a task into the data store
+- (void)insertTaskWithType:(NSString *)taskType status:(NSString *)taskStatus summaryDescription:(NSString *)taskSummaryDescription createdTimestamp:(NSDate *)taskCreatedTimestamp;
 
 @end

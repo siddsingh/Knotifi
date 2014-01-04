@@ -9,13 +9,23 @@
 //
 
 #import <UIKit/UIKit.h>
+@class KNDataController;
 
 @interface KNTasksViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+
+// Data Controller to add/access tasks in the data store
+@property (strong, nonatomic) KNDataController *taskDataController;
 
 // Table for task navigation options
 @property (weak, nonatomic) IBOutlet UITableView *tasksNavTable;
 
 // Table for list of tasks
 @property (weak, nonatomic) IBOutlet UITableView *tasksListTable;
+
+// Add task action
+- (IBAction)addTask:(id)sender;
+
+// Text field to input task summary description
+@property (weak, nonatomic) IBOutlet UITextField *taskSummaryDescField;
 
 @end

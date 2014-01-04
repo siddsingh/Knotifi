@@ -13,9 +13,16 @@
 
 @implementation Task
 
+// Type can take the following values: Now - short term tasks, Later - long term tasks.
 @dynamic type;
+
+// Status can be: To Do, Done
 @dynamic status;
+
+// Short description of the task
 @dynamic summaryDescription;
+
+// Time when the task was created
 @dynamic createdTimestamp;
 
 @end

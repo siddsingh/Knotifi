@@ -14,9 +14,16 @@
 
 @interface Task : NSManagedObject
 
+// Type can take the following values: Now - short term tasks, Later - long term tasks.
 @property (nonatomic, retain) NSString * type;
+
+// Status can be: To Do, Done
 @property (nonatomic, retain) NSString * status;
+
+// Short description of the task
 @property (nonatomic, retain) NSString * summaryDescription;
+
+// Time when the task was created
 @property (nonatomic, retain) NSDate * createdTimestamp;
 
 @end

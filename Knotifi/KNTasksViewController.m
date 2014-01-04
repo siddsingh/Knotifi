@@ -9,8 +9,12 @@
 //
 
 #import "KNTasksViewController.h"
+#import "KNDataController.h"
 
 @interface KNTasksViewController ()
+
+// Validate the summary description of the task entered
+- (BOOL) taskSummaryDescValid:(UITextField *)textField;
 
 @end
 
@@ -28,10 +32,48 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+	
+    // Do any additional setup after loading the view.
+    
+    // Get a data controller that you will use later
+    self.taskDataController = [[KNDataController alloc] init];
 }
 
-#pragma mark - Nav and List Table Methods
+#pragma mark - Add Task UI
+
+// On performing the Add Task action, insert task into the data store and display it in the task list table.
+- (IBAction)addTask:(id)sender {
+    
+    // Check to see if entered summary description of the task is valid. If Yes
+    if ([self taskSummaryDescValid:self.taskSummaryDescField]) {
+        
+        // Add task to the data store
+        [self.taskDataController insertTaskWithType:@"Now" status:@"To Do" summaryDescription:self.taskSummaryDescField createdTimestamp:<#(NSDate *)#>];
+        
+        // Fire the list of categories changed notification
+        [self sendCategoriesChangeNotification];
+    }
+}
+
+// Validate the summary description of the task entered
+- (BOOL) taskSummaryDescValid:(UITextField *)textField {
+    
+    NSString *inputString = textField.text;
+    
+    // If the entered summary description is the same as the default text
+    if ([inputString isEqualToString:@"          ADD A TO DO"]) {
+        return NO;
+    }
+    
+    // If the entered summary description is empty
+    if ([inputString isEqualToString:@""]) {
+        return NO;
+    }
+    
+    return YES;
+}
+
+#pragma mark - Nav and List Table
 
 // Return headers for the table views
 -(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -94,4 +136,6 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)addTask:(id)sender {
+}
 @end
