@@ -31,4 +31,7 @@
 // Insert a task into the data store
 - (void)insertTaskWithType:(NSString *)taskType status:(NSString *)taskStatus summaryDescription:(NSString *)taskSummaryDescription createdTimestamp:(NSDate *)taskCreatedTimestamp;
 
+// Get all tasks from the data store
+- (NSFetchedResultsController *)getAllTasks;
+
 @end

@@ -16,6 +16,9 @@
 // Data Controller to add/access tasks in the data store
 @property (strong, nonatomic) KNDataController *taskDataController;
 
+// Controller containing results of task queries to Core Data store
+@property (strong, nonatomic) NSFetchedResultsController *tasksController;
+
 // Table for task navigation options
 @property (weak, nonatomic) IBOutlet UITableView *tasksNavTable;
 

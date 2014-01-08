@@ -10,11 +10,15 @@
 
 #import "KNTasksViewController.h"
 #import "KNDataController.h"
+#import "Task.h"
 
 @interface KNTasksViewController ()
 
 // Validate the summary description of the task entered
 - (BOOL) taskSummaryDescValid:(UITextField *)textField;
+
+// Send a notification that the list of tasks has changed (updated)
+- (void)sendTasksChangeNotification;
 
 @end
 
@@ -37,6 +41,11 @@
     
     // Get a data controller that you will use later
     self.taskDataController = [[KNDataController alloc] init];
+    
+    // Register the tasks change listener
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(taskStoreChanged:)
+                                                 name:@"TaskStoreUpdated" object:nil];
 }
 
 #pragma mark - Add Task UI
@@ -48,10 +57,10 @@
     if ([self taskSummaryDescValid:self.taskSummaryDescField]) {
         
         // Add task to the data store
-        [self.taskDataController insertTaskWithType:@"Now" status:@"To Do" summaryDescription:self.taskSummaryDescField createdTimestamp:<#(NSDate *)#>];
+        [self.taskDataController insertTaskWithType:@"Now" status:@"To Do" summaryDescription:self.taskSummaryDescField.text createdTimestamp:[NSDate date]];
         
-        // Fire the list of categories changed notification
-        [self sendCategoriesChangeNotification];
+        // Fire the list of tasks changed notification
+        [self sendTasksChangeNotification];
     }
 }
 
@@ -102,7 +111,19 @@
 // Return number of rows in the table views
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    // If tasks nav table
+    if(tableView == self.tasksNavTable) {
+        
+        return 1;
+    }
+    
+    // If tasks list table
+    else {
+        
+        self.tasksController = [self.taskDataController getAllTasks];
+        id taskSection = [[self.tasksController sections] objectAtIndex:section];
+        return [taskSection numberOfObjects];
+    }
 }
 
 // Return a cell configured to display a task or a task nav item
@@ -114,6 +135,10 @@
         static NSString *CellIdentifier = @"TasksNavCell";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
         
+        // There's only one task nav option currently. TO DO: Will change in the future to reading this
+        // from some kind of data store.
+        [[cell textLabel] setText:@"To Do"];
+        
         return cell;
     }
     
@@ -123,9 +148,28 @@
         static NSString *CellIdentifier = @"TaskCell";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
         
+        Task *taskAtIndex;
+        taskAtIndex = [self.tasksController objectAtIndexPath:indexPath];
+        
+        // Display the task summary description
+        [[cell textLabel] setText:taskAtIndex.summaryDescription];
+        
         return cell;
     }
+}
+
+#pragma mark - Notifications
+
+// Send a notification that the list of tasks has changed (updated)
+- (void)sendTasksChangeNotification {
     
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"TaskStoreUpdated" object:self];
+}
+
+// Refresh the tasks list table when the message store for the table has changed
+- (void)taskStoreChanged:(NSNotification *)notification {
+    
+    [self.tasksListTable reloadData];
 }
 
 #pragma mark - Unused Methods
@@ -136,6 +180,4 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)addTask:(id)sender {
-}
 @end
