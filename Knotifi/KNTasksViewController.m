@@ -50,6 +50,29 @@
 
 #pragma mark - Add Task UI
 
+// Add a To Do text field should dismiss the keyboard on hitting return. Entered
+// data should be added to the task datastore as the summary description.
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    
+    if (textField == self.taskSummaryDescField) {
+        
+        // Check to see if entered summary description of the task is valid. If Yes
+        if ([self taskSummaryDescValid:self.taskSummaryDescField]) {
+            
+            // Add task to the data store
+            [self.taskDataController insertTaskWithType:@"Now" status:@"To Do" summaryDescription:self.taskSummaryDescField.text createdTimestamp:[NSDate date]];
+            
+            // Fire the list of tasks changed notification
+            [self sendTasksChangeNotification];
+            
+            // Set task entry UI format to default
+            [self resetTaskEntryUIFormat];
+        }
+    }
+    
+    return YES;
+}
+
 // On performing the Add Task action, insert task into the data store and display it in the task list table.
 - (IBAction)addTask:(id)sender {
     
@@ -61,6 +84,9 @@
         
         // Fire the list of tasks changed notification
         [self sendTasksChangeNotification];
+        
+        // Set task entry UI format to default
+        [self resetTaskEntryUIFormat];
     }
 }
 
@@ -80,6 +106,16 @@
     }
     
     return YES;
+}
+
+// Set the task entry UI format to reflect default initial state
+- (void)resetTaskEntryUIFormat {
+    
+    // Dismiss keyboard from the task entry field
+    [self.taskSummaryDescField resignFirstResponder];
+    
+    // Set text to default initial state
+    [self.taskSummaryDescField setText:@"          ADD A TO DO"];
 }
 
 #pragma mark - Nav and List Table
@@ -148,11 +184,17 @@
         static NSString *CellIdentifier = @"TaskCell";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
         
+        // Get task to display
         Task *taskAtIndex;
         taskAtIndex = [self.tasksController objectAtIndexPath:indexPath];
         
+        // Construct and display the task type and status e.g. TO DO, NOW
+        NSString *taskTypeLabel = [[NSString alloc] initWithFormat:@"%@, %@",[taskAtIndex.status uppercaseString],[taskAtIndex.type uppercaseString]];
+        [[cell textLabel] setText:taskTypeLabel];
+        
         // Display the task summary description
-        [[cell textLabel] setText:taskAtIndex.summaryDescription];
+        [[cell detailTextLabel] setNumberOfLines:2];
+        [[cell detailTextLabel] setText:taskAtIndex.summaryDescription];
         
         return cell;
     }
