@@ -42,6 +42,13 @@
     // Get a data controller that you will use later
     self.taskDataController = [[KNDataController alloc] init];
     
+    // Initialize the task navigation options array
+    self.taskNavOptions = [[NSMutableArray alloc] init];
+    // Add the default navigation options for To Dos
+    [self.taskNavOptions addObject:@"All"];
+    [self.taskNavOptions addObject:@"Now"];
+    [self.taskNavOptions addObject:@"Later"];
+    
     // Register the tasks change listener
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(taskStoreChanged:)
@@ -150,7 +157,7 @@
     // If tasks nav table
     if(tableView == self.tasksNavTable) {
         
-        return 1;
+        return self.taskNavOptions.count;
     }
     
     // If tasks list table
@@ -171,9 +178,8 @@
         static NSString *CellIdentifier = @"TasksNavCell";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
         
-        // There's only one task nav option currently. TO DO: Will change in the future to reading this
-        // from some kind of data store.
-        [[cell textLabel] setText:@"To Do"];
+        // Show the to do nav option from the array for this.
+        [[cell textLabel] setText:[self.taskNavOptions objectAtIndex:indexPath.row]];
         
         return cell;
     }

@@ -22,6 +22,9 @@
 // Table for task navigation options
 @property (weak, nonatomic) IBOutlet UITableView *tasksNavTable;
 
+// Array to store the task navigation options
+@property (strong, nonatomic) NSMutableArray *taskNavOptions;
+
 // Table for list of tasks
 @property (weak, nonatomic) IBOutlet UITableView *tasksListTable;
 
