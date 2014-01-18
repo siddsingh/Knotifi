@@ -15,7 +15,10 @@
 @interface KNTasksViewController ()
 
 // Validate the summary description of the task entered
-- (BOOL) taskSummaryDescValid:(UITextField *)textField;
+- (BOOL) taskSummaryDescValid:(NSString *)taskSummaryDescription;
+
+// Add a task with the given task summary description
+- (void)addTaskToDataStore:(NSString *)taskSummaryDescription;
 
 // Send a notification that the list of tasks has changed (updated)
 - (void)sendTasksChangeNotification;
@@ -64,10 +67,10 @@
     if (textField == self.taskSummaryDescField) {
         
         // Check to see if entered summary description of the task is valid. If Yes
-        if ([self taskSummaryDescValid:self.taskSummaryDescField]) {
+        if ([self taskSummaryDescValid:self.taskSummaryDescField.text]) {
             
             // Add task to the data store
-            [self.taskDataController insertTaskWithType:@"Now" status:@"To Do" summaryDescription:self.taskSummaryDescField.text createdTimestamp:[NSDate date]];
+            [self addTaskToDataStore:self.taskSummaryDescField.text];
             
             // Fire the list of tasks changed notification
             [self sendTasksChangeNotification];
@@ -80,14 +83,22 @@
     return YES;
 }
 
+// On clicking the Later button, toggle it's state i.e. if it was deselected, set it to selected
+// and vice versa
+- (IBAction)setToLater:(id)sender {
+    
+    // Toggle the button state.
+    [self.taskTypeButton setSelected:![self.taskTypeButton isSelected]];
+}
+
 // On performing the Add Task action, insert task into the data store and display it in the task list table.
 - (IBAction)addTask:(id)sender {
     
     // Check to see if entered summary description of the task is valid. If Yes
-    if ([self taskSummaryDescValid:self.taskSummaryDescField]) {
+    if ([self taskSummaryDescValid:self.taskSummaryDescField.text]) {
         
         // Add task to the data store
-        [self.taskDataController insertTaskWithType:@"Now" status:@"To Do" summaryDescription:self.taskSummaryDescField.text createdTimestamp:[NSDate date]];
+        [self addTaskToDataStore:self.taskSummaryDescField.text];
         
         // Fire the list of tasks changed notification
         [self sendTasksChangeNotification];
@@ -98,21 +109,33 @@
 }
 
 // Validate the summary description of the task entered
-- (BOOL) taskSummaryDescValid:(UITextField *)textField {
-    
-    NSString *inputString = textField.text;
+- (BOOL) taskSummaryDescValid:(NSString *)taskSummaryDescription {
     
     // If the entered summary description is the same as the default text
-    if ([inputString isEqualToString:@"          ADD A TO DO"]) {
+    if ([taskSummaryDescription isEqualToString:@"          ADD A TO DO"]) {
         return NO;
     }
     
     // If the entered summary description is empty
-    if ([inputString isEqualToString:@""]) {
+    if ([taskSummaryDescription isEqualToString:@""]) {
         return NO;
     }
     
     return YES;
+}
+
+// Add a task with the given task summary description
+- (void)addTaskToDataStore:(NSString *)taskSummaryDescription {
+    
+    // If the task type is set to Later
+    if (self.taskTypeButton.isSelected) {
+        
+        [self.taskDataController insertTaskWithType:@"Later" status:@"To Do" summaryDescription:taskSummaryDescription createdTimestamp:[NSDate date]];
+    }
+    // If the task type is set to Now
+    else {
+        [self.taskDataController insertTaskWithType:@"Now" status:@"To Do" summaryDescription:taskSummaryDescription createdTimestamp:[NSDate date]];
+    }
 }
 
 // Set the task entry UI format to reflect default initial state
@@ -123,6 +146,9 @@
     
     // Set text to default initial state
     [self.taskSummaryDescField setText:@"          ADD A TO DO"];
+    
+    // Set Task Type button to default state of Now
+    [self.taskTypeButton setSelected:NO];
 }
 
 #pragma mark - Nav and List Table
@@ -195,7 +221,7 @@
         taskAtIndex = [self.tasksController objectAtIndexPath:indexPath];
         
         // Construct and display the task type and status e.g. TO DO, NOW
-        NSString *taskTypeLabel = [[NSString alloc] initWithFormat:@"%@, %@",[taskAtIndex.status uppercaseString],[taskAtIndex.type uppercaseString]];
+        NSString *taskTypeLabel = [[NSString alloc] initWithFormat:@"%@",[taskAtIndex.type uppercaseString]];
         [[cell textLabel] setText:taskTypeLabel];
         
         // Display the task summary description

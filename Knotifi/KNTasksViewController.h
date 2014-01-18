@@ -28,7 +28,14 @@
 // Table for list of tasks
 @property (weak, nonatomic) IBOutlet UITableView *tasksListTable;
 
-// Add task action
+// Button to set type of Task to Later.
+@property (weak, nonatomic) IBOutlet UIButton *taskTypeButton;
+
+// On clicking the Later button, toggle it's state i.e. if it was deselected, set it to selected
+// and vice versa
+- (IBAction)setToLater:(id)sender;
+
+// On performing the Add Task action, insert task into the data store and display it in the task list table.
 - (IBAction)addTask:(id)sender;
 
 // Text field to input task summary description
