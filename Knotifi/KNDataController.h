@@ -34,4 +34,6 @@
 // Get all tasks from the data store
 - (NSFetchedResultsController *)getAllTasks;
 
+// Get tasks with a particular status from the data store.
+- (NSFetchedResultsController *)getTasksWithStatus:(NSString *)taskStatus;
 @end

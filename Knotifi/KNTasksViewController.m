@@ -23,6 +23,9 @@
 // Send a notification that the list of tasks has changed (updated)
 - (void)sendTasksChangeNotification;
 
+// Query the data store based on the task navigation row selected and set the results controller.
+- (void)queryTasksForSelectedNavRow:(NSIndexPath *)selectedRowPath andSetResults:(NSFetchedResultsController *)resultsController;
+
 @end
 
 @implementation KNTasksViewController
@@ -51,6 +54,9 @@
     [self.taskNavOptions addObject:@"All"];
     [self.taskNavOptions addObject:@"Now"];
     [self.taskNavOptions addObject:@"Later"];
+    
+    // Query all tasks with status To Do as that is the default view first shown
+    self.tasksController = [self.taskDataController getTasksWithStatus:@"To Do"];
     
     // Register the tasks change listener
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -189,7 +195,6 @@
     // If tasks list table
     else {
         
-        self.tasksController = [self.taskDataController getAllTasks];
         id taskSection = [[self.tasksController sections] objectAtIndex:section];
         return [taskSection numberOfObjects];
     }
@@ -230,6 +235,13 @@
         
         return cell;
     }
+}
+
+// Query the data store based on the task navigation row selected and set the results controller.
+- (void)queryTasksForSelectedNavRow:(NSIndexPath *)selectedRowPath andSetResults:(NSFetchedResultsController *)resultsController
+{
+    
+    
 }
 
 #pragma mark - Notifications

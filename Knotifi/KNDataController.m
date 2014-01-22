@@ -86,4 +86,39 @@
     return self.resultsController;
 }
 
+// Get tasks with a particular status from the data store.
+- (NSFetchedResultsController *)getTasksWithStatus:(NSString *)taskStatus
+{
+    NSManagedObjectContext *dataStoreContext = [self managedObjectContext];
+    
+    NSFetchRequest *taskFetchRequest = [[NSFetchRequest alloc] init];
+    
+    NSEntityDescription *taskEntity = [NSEntityDescription entityForName:@"Task" inManagedObjectContext:dataStoreContext];
+    [taskFetchRequest setEntity:taskEntity];
+    
+    // Set a clause to do a case insensitive query on task status
+    NSPredicate *taskPredicate = [NSPredicate predicateWithFormat:@"status =[c] %@",taskStatus];
+    [taskFetchRequest setPredicate:taskPredicate];
+
+    // Sort first to get "now" tasks and then "later". Within these categories get the latest created first.
+    NSArray *sortByFields = [NSArray arrayWithObjects:
+                             [NSSortDescriptor sortDescriptorWithKey:@"type" ascending:NO],
+                             [NSSortDescriptor sortDescriptorWithKey:@"createdTimestamp" ascending:NO],
+                             nil];
+    [taskFetchRequest setSortDescriptors:sortByFields];
+    
+    [taskFetchRequest setFetchBatchSize:15];
+    
+    self.resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:taskFetchRequest
+                                                                 managedObjectContext:dataStoreContext sectionNameKeyPath:nil
+                                                                            cacheName:nil];
+    
+    NSError *error;
+    if (![self.resultsController performFetch:&error]) {
+        NSLog(@"ERROR: Getting tasks with status %@ from data store failed: %@",taskStatus,error.description);
+    }
+    
+    return self.resultsController;
+}
+
 @end
