@@ -121,4 +121,39 @@
     return self.resultsController;
 }
 
+// Get tasks with a particular status and type from the data store.
+- (NSFetchedResultsController *)getTasksWithStatus:(NSString *)taskStatus type:(NSString *)taskType
+{
+    NSManagedObjectContext *dataStoreContext = [self managedObjectContext];
+    
+    NSFetchRequest *taskFetchRequest = [[NSFetchRequest alloc] init];
+    
+    NSEntityDescription *taskEntity = [NSEntityDescription entityForName:@"Task" inManagedObjectContext:dataStoreContext];
+    [taskFetchRequest setEntity:taskEntity];
+    
+    // Set a clause to do a case insensitive query on task status and task type
+    NSPredicate *taskPredicate = [NSPredicate predicateWithFormat:@"status =[c] %@ AND type=[c] %@",taskStatus,taskType];
+    [taskFetchRequest setPredicate:taskPredicate];
+    
+    // Sort to get the latest created first.
+    NSArray *sortByFields = [NSArray arrayWithObjects:
+                             [NSSortDescriptor sortDescriptorWithKey:@"createdTimestamp" ascending:NO],
+                             nil];
+    [taskFetchRequest setSortDescriptors:sortByFields];
+    
+    [taskFetchRequest setFetchBatchSize:15];
+    
+    self.resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:taskFetchRequest
+                                                                 managedObjectContext:dataStoreContext sectionNameKeyPath:nil
+                                                                            cacheName:nil];
+    
+    NSError *error;
+    if (![self.resultsController performFetch:&error]) {
+        NSLog(@"ERROR: Getting tasks with status %@ and type %@ from data store failed: %@",taskStatus,taskType,error.description);
+    }
+    
+    return self.resultsController;
+}
+
+
 @end

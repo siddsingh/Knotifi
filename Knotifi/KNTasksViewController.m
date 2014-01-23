@@ -24,7 +24,7 @@
 - (void)sendTasksChangeNotification;
 
 // Query the data store based on the task navigation row selected and set the results controller.
-- (void)queryTasksForSelectedNavRow:(NSIndexPath *)selectedRowPath andSetResults:(NSFetchedResultsController *)resultsController;
+- (void)queryTasksForSelectedNavRow:(NSIndexPath *)selectedRowPath;
 
 @end
 
@@ -237,11 +237,41 @@
     }
 }
 
+// When a row (option) is selected on the tasks nav table, update the tasks list table to show corresponding tasks
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    // If its the tasks nav table
+    if(tableView == self.tasksNavTable){
+        
+        // Query the data store for the tasks corresponding to the selected option(row)
+        [self queryTasksForSelectedNavRow:indexPath];
+        
+        // Reload the tasks list table to reflect the tasks
+        [self.tasksListTable reloadData];
+    }
+}
+
 // Query the data store based on the task navigation row selected and set the results controller.
-- (void)queryTasksForSelectedNavRow:(NSIndexPath *)selectedRowPath andSetResults:(NSFetchedResultsController *)resultsController
-{
+- (void)queryTasksForSelectedNavRow:(NSIndexPath *)selectedRowPath {
     
+    NSString *selectedNavOption;
     
+    // If the selected row is in the topmost section which is To Do
+    if (selectedRowPath.section == 0) {
+        
+        // Get the text for the currently selected row
+        selectedNavOption = [self.tasksNavTable cellForRowAtIndexPath:selectedRowPath].textLabel.text;
+        
+        // If the selected row is All get All To Dos
+        if ([selectedNavOption isEqualToString:@"All"]) {
+            self.tasksController = [self.taskDataController getTasksWithStatus:@"To Do"];
+        }
+        
+        // If not get To Dos with the type corresponding to the selection
+        else {
+            self.tasksController = [self.taskDataController getTasksWithStatus:@"To Do" type:selectedNavOption];
+        }
+    }
 }
 
 #pragma mark - Notifications
