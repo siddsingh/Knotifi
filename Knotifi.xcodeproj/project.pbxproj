@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9E805600189750BF00605132 /* KNTasksTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E8055FF189750BF00605132 /* KNTasksTableViewCell.m */; };
 		9E99DE8F1872562900DC5743 /* Ipad_Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9E99DE8E1872562900DC5743 /* Ipad_Storyboard.storyboard */; };
 		9E99DE911872567400DC5743 /* Iphone_Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9E99DE901872567400DC5743 /* Iphone_Storyboard.storyboard */; };
 		9E99DE94187635A000DC5743 /* KNTasksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E99DE93187635A000DC5743 /* KNTasksViewController.m */; };
@@ -41,6 +42,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9E8055FE189750BF00605132 /* KNTasksTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNTasksTableViewCell.h; sourceTree = "<group>"; };
+		9E8055FF189750BF00605132 /* KNTasksTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNTasksTableViewCell.m; sourceTree = "<group>"; };
 		9E99DE8E1872562900DC5743 /* Ipad_Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Ipad_Storyboard.storyboard; sourceTree = "<group>"; };
 		9E99DE901872567400DC5743 /* Iphone_Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Iphone_Storyboard.storyboard; sourceTree = "<group>"; };
 		9E99DE92187635A000DC5743 /* KNTasksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNTasksViewController.h; sourceTree = "<group>"; };
@@ -135,6 +138,8 @@
 				9E9D7DE318627C4700030BAE /* AppDelegate.m */,
 				9E99DE92187635A000DC5743 /* KNTasksViewController.h */,
 				9E99DE93187635A000DC5743 /* KNTasksViewController.m */,
+				9E8055FE189750BF00605132 /* KNTasksTableViewCell.h */,
+				9E8055FF189750BF00605132 /* KNTasksTableViewCell.m */,
 				9E99DEDC18778CE500DC5743 /* KNDataController.h */,
 				9E99DEDD18778CE500DC5743 /* KNDataController.m */,
 				9E99DEDF18778F7E00DC5743 /* Task.h */,
@@ -279,6 +284,7 @@
 				9E99DEE118778F7E00DC5743 /* Task.m in Sources */,
 				9E99DEDE18778CE500DC5743 /* KNDataController.m in Sources */,
 				9E99DEDB1877854100DC5743 /* KNDataStore.m in Sources */,
+				9E805600189750BF00605132 /* KNTasksTableViewCell.m in Sources */,
 				9E99DE94187635A000DC5743 /* KNTasksViewController.m in Sources */,
 				9E9D7DE718627C4700030BAE /* Knotifi.xcdatamodeld in Sources */,
 				9E9D7DE418627C4700030BAE /* AppDelegate.m in Sources */,

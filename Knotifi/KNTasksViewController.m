@@ -11,6 +11,7 @@
 #import "KNTasksViewController.h"
 #import "KNDataController.h"
 #import "Task.h"
+#import "KNTasksTableViewCell.h"
 
 @interface KNTasksViewController ()
 
@@ -25,6 +26,9 @@
 
 // Query the data store based on the task navigation row selected and set the results controller.
 - (void)queryTasksForSelectedNavRow:(NSIndexPath *)selectedRowPath;
+
+// Return priority color based on the row position for a task. Red indicates the highest priority, Yellow is lesser
+- (UIColor *)colorBasedOnTaskPosition:(NSIndexPath *)positionPath;
 
 @end
 
@@ -219,19 +223,17 @@
     else {
         
         static NSString *CellIdentifier = @"TaskCell";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+        KNTasksTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         
         // Get task to display
         Task *taskAtIndex;
         taskAtIndex = [self.tasksController objectAtIndexPath:indexPath];
         
-        // Construct and display the task type and status e.g. TO DO, NOW
-        NSString *taskTypeLabel = [[NSString alloc] initWithFormat:@"%@",[taskAtIndex.type uppercaseString]];
-        [[cell textLabel] setText:taskTypeLabel];
-        
         // Display the task summary description
-        [[cell detailTextLabel] setNumberOfLines:2];
-        [[cell detailTextLabel] setText:taskAtIndex.summaryDescription];
+        [[cell summaryDescription] setText:taskAtIndex.summaryDescription];
+        
+        // Set the task label with a color representing it's priority
+        [[cell priorityLabel] setBackgroundColor:[self colorBasedOnTaskPosition:indexPath]];
         
         return cell;
     }
@@ -272,6 +274,15 @@
             self.tasksController = [self.taskDataController getTasksWithStatus:@"To Do" type:selectedNavOption];
         }
     }
+}
+
+// Return priority color based on the row position for a task. Red indicates the highest priority, Yellow is lesser
+- (UIColor *)colorBasedOnTaskPosition:(NSIndexPath *)positionPath {
+    
+    NSInteger noOfTasks = [[[self.tasksController sections] objectAtIndex:positionPath.section] numberOfObjects] - 1;
+    
+    float greenValue = ((float)positionPath.row /(float)noOfTasks) * 0.6;
+    return [UIColor colorWithRed:1.0 green:greenValue blue:0.0 alpha:1.0];
 }
 
 #pragma mark - Notifications
