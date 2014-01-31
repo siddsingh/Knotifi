@@ -62,6 +62,9 @@
     // Query all tasks with status To Do as that is the default view first shown
     self.tasksController = [self.taskDataController getTasksWithStatus:@"To Do"];
     
+    // Set type of task being created to Now as default
+    self.taskTypeIsNow = YES;
+    
     // Register the tasks change listener
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(taskStoreChanged:)
@@ -93,12 +96,24 @@
     return YES;
 }
 
-// On clicking the Later button, toggle it's state i.e. if it was deselected, set it to selected
-// and vice versa
-- (IBAction)setToLater:(id)sender {
+// Handle the swipe to left action on the task input text view by toggling the
+// task type and showing the appropriate add message with color coding
+- (IBAction)handleTaskInputSwipe:(UISwipeGestureRecognizer *)sender {
     
-    // Toggle the button state.
-    [self.taskTypeButton setSelected:![self.taskTypeButton isSelected]];
+    // Toggle the task type
+    self.taskTypeIsNow = !self.taskTypeIsNow;
+    
+    // Show the appropriate message with the correct color coding
+    if (self.taskTypeIsNow) {
+        
+        [self.taskSummaryDescField setTextColor:[UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:1.0]];
+        [self.taskSummaryDescField setText:@"          ADD A TO DO"];
+    }
+    else {
+        
+        [self.taskSummaryDescField setTextColor:[UIColor colorWithRed:1.0 green:0.5 blue:0.0 alpha:1.0]];
+        [self.taskSummaryDescField setText:@"          ADD A TO DO FOR LATER"];
+    }
 }
 
 // On performing the Add Task action, insert task into the data store and display it in the task list table.
@@ -112,6 +127,8 @@
         
         // Fire the list of tasks changed notification
         [self sendTasksChangeNotification];
+        
+        NSLog(@"Just called sendnotification");
         
         // Set task entry UI format to default
         [self resetTaskEntryUIFormat];
@@ -137,14 +154,15 @@
 // Add a task with the given task summary description
 - (void)addTaskToDataStore:(NSString *)taskSummaryDescription {
     
+    // If the task type is set to Now
+    if (self.taskTypeIsNow) {
+        
+        [self.taskDataController insertTaskWithType:@"Now" status:@"To Do" summaryDescription:taskSummaryDescription createdTimestamp:[NSDate date]];
+    }
     // If the task type is set to Later
-    if (self.taskTypeButton.isSelected) {
+    else {
         
         [self.taskDataController insertTaskWithType:@"Later" status:@"To Do" summaryDescription:taskSummaryDescription createdTimestamp:[NSDate date]];
-    }
-    // If the task type is set to Now
-    else {
-        [self.taskDataController insertTaskWithType:@"Now" status:@"To Do" summaryDescription:taskSummaryDescription createdTimestamp:[NSDate date]];
     }
 }
 
@@ -155,10 +173,11 @@
     [self.taskSummaryDescField resignFirstResponder];
     
     // Set text to default initial state
+    [self.taskSummaryDescField setTextColor:[UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:1.0]];
     [self.taskSummaryDescField setText:@"          ADD A TO DO"];
     
-    // Set Task Type button to default state of Now
-    [self.taskTypeButton setSelected:NO];
+    // Set type of task being created to Now as default
+    self.taskTypeIsNow = YES;
 }
 
 #pragma mark - Nav and List Table
@@ -291,12 +310,14 @@
 - (void)sendTasksChangeNotification {
     
     [[NSNotificationCenter defaultCenter]postNotificationName:@"TaskStoreUpdated" object:self];
+    NSLog(@"Notification Posted");
 }
 
 // Refresh the tasks list table when the message store for the table has changed
 - (void)taskStoreChanged:(NSNotification *)notification {
     
     [self.tasksListTable reloadData];
+     NSLog(@"Notification Fired, Table Reloaded");
 }
 
 #pragma mark - Unused Methods

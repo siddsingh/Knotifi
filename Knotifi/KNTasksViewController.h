@@ -28,12 +28,11 @@
 // Table for list of tasks
 @property (weak, nonatomic) IBOutlet UITableView *tasksListTable;
 
-// Button to set type of Task to Later.
-@property (weak, nonatomic) IBOutlet UIButton *taskTypeButton;
+// Flag to indicate if the task being created is of type Now or Later
+@property (nonatomic, assign) BOOL taskTypeIsNow;
 
-// On clicking the Later button, toggle it's state i.e. if it was deselected, set it to selected
-// and vice versa
-- (IBAction)setToLater:(id)sender;
+// Handle the swipe to left action on the task input text view
+- (IBAction)handleTaskInputSwipe:(UISwipeGestureRecognizer *)sender;
 
 // On performing the Add Task action, insert task into the data store and display it in the task list table.
 - (IBAction)addTask:(id)sender;
