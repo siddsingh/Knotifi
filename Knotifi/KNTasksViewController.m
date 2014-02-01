@@ -27,6 +27,9 @@
 // Query the data store based on the task navigation row selected and set the results controller.
 - (void)queryTasksForSelectedNavRow:(NSIndexPath *)selectedRowPath;
 
+// Query the data store based on the text of the selected task navigation row and set the results controller.
+- (void)queryTasksForSelectedNavOption:(NSString *)optionText;
+
 // Return priority color based on the row position for a task. Red indicates the highest priority, Yellow is lesser
 - (UIColor *)colorBasedOnTaskPosition:(NSIndexPath *)positionPath;
 
@@ -62,6 +65,9 @@
     // Query all tasks with status To Do as that is the default view first shown
     self.tasksController = [self.taskDataController getTasksWithStatus:@"To Do"];
     
+    // Set the title of the currently selected task navigation option to the default i.e. All
+    self.currentTaskNavOption = [NSString stringWithFormat:@"All"];
+    
     // Set type of task being created to Now as default
     self.taskTypeIsNow = YES;
     
@@ -84,6 +90,9 @@
             
             // Add task to the data store
             [self addTaskToDataStore:self.taskSummaryDescField.text];
+            
+            // Requery the data store to include the new task
+            [self queryTasksForSelectedNavOption:self.currentTaskNavOption];
             
             // Fire the list of tasks changed notification
             [self sendTasksChangeNotification];
@@ -124,6 +133,9 @@
         
         // Add task to the data store
         [self addTaskToDataStore:self.taskSummaryDescField.text];
+        
+        // Requery the data store to include the new task
+        [self queryTasksForSelectedNavOption:self.currentTaskNavOption];
         
         // Fire the list of tasks changed notification
         [self sendTasksChangeNotification];
@@ -258,13 +270,14 @@
     }
 }
 
-// When a row (option) is selected on the tasks nav table, update the tasks list table to show corresponding tasks
+// When a row (option) is selected on the tasks nav table, update the tasks list table to show corresponding tasks. Also update the currently selected task nav option.
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     // If its the tasks nav table
     if(tableView == self.tasksNavTable){
         
-        // Query the data store for the tasks corresponding to the selected option(row)
+        // Query the data store for the tasks corresponding to the selected option(row). Plus
+        // update the currently selected task nav option.
         [self queryTasksForSelectedNavRow:indexPath];
         
         // Reload the tasks list table to reflect the tasks
@@ -283,15 +296,25 @@
         // Get the text for the currently selected row
         selectedNavOption = [self.tasksNavTable cellForRowAtIndexPath:selectedRowPath].textLabel.text;
         
-        // If the selected row is All get All To Dos
-        if ([selectedNavOption isEqualToString:@"All"]) {
-            self.tasksController = [self.taskDataController getTasksWithStatus:@"To Do"];
-        }
+        // Set the currently selected task nav option
+        self.currentTaskNavOption = selectedNavOption;
         
-        // If not get To Dos with the type corresponding to the selection
-        else {
-            self.tasksController = [self.taskDataController getTasksWithStatus:@"To Do" type:selectedNavOption];
-        }
+        // Query the data store based on the text of the selected task navigation row and set the results controller.
+        [self queryTasksForSelectedNavOption:selectedNavOption];
+    }
+}
+
+// Query the data store based on the text of the selected task navigation row and set the results controller.
+- (void)queryTasksForSelectedNavOption:(NSString *)optionText {
+    
+    // If the selected row is All get All To Dos
+    if ([optionText isEqualToString:@"All"]) {
+        self.tasksController = [self.taskDataController getTasksWithStatus:@"To Do"];
+    }
+    
+    // If not get To Dos with the type corresponding to the selection
+    else {
+        self.tasksController = [self.taskDataController getTasksWithStatus:@"To Do" type:optionText];
     }
 }
 

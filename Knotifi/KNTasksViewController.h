@@ -25,6 +25,9 @@
 // Array to store the task navigation options
 @property (strong, nonatomic) NSMutableArray *taskNavOptions;
 
+// Store for label text of the currently selected task navigation option
+@property (strong, nonatomic) NSString *currentTaskNavOption;
+
 // Table for list of tasks
 @property (weak, nonatomic) IBOutlet UITableView *tasksListTable;
 
