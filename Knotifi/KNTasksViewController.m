@@ -140,8 +140,6 @@
         // Fire the list of tasks changed notification
         [self sendTasksChangeNotification];
         
-        NSLog(@"Just called sendnotification");
-        
         // Set task entry UI format to default
         [self resetTaskEntryUIFormat];
     }
@@ -254,7 +252,7 @@
     else {
         
         static NSString *CellIdentifier = @"TaskCell";
-        KNTasksTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        KNTasksTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
         
         // Get task to display
         Task *taskAtIndex;
@@ -333,14 +331,12 @@
 - (void)sendTasksChangeNotification {
     
     [[NSNotificationCenter defaultCenter]postNotificationName:@"TaskStoreUpdated" object:self];
-    NSLog(@"Notification Posted");
 }
 
 // Refresh the tasks list table when the message store for the table has changed
 - (void)taskStoreChanged:(NSNotification *)notification {
     
     [self.tasksListTable reloadData];
-     NSLog(@"Notification Fired, Table Reloaded");
 }
 
 #pragma mark - Unused Methods
