@@ -75,6 +75,7 @@
     return NO;
 }
 
+// Respond to the right to left pan by revealing the action buttons.
 - (void)handleTaskPan:(UIPanGestureRecognizer *)panRecognizer {
     
     // Capture the initial center of the cell when gesture has started
@@ -83,37 +84,45 @@
         _initialCenter = self.contentView.center;
     }
     
-    // Move the center of the cell as the gesture progresses
+    // Move the center of the cell as the gesture progresses only so far as to reveal the action buttons
     if(panRecognizer.state == UIGestureRecognizerStateChanged) {
         
         // Get the change in position
         CGPoint change = [panRecognizer translationInView:self];
         
-        // Move the cell center
-        self.contentView.center = CGPointMake(_initialCenter.x + change.x, _initialCenter.y);
-        
+        // Move the cell center only so far as to reveal the done button, basically the width
+        // of the done button
+        //NSLog(@"Cell original center is x:%f and y:%f",_initialCenter.x,_initialCenter.y);
+        NSLog(@"Cell content new center is x:%f and y:%f and width of button is:%f",self.contentView.center.x,self.contentView.center.y,self.frame.size.width/5.0f);
+        NSLog(@"Difference in the 2 positions is:%f",(self.contentView.center.x - _initialCenter.x));
+        // Frame width can be negative as per CGRect reference, so standardizing it to the absolute value
+        // Also the difference in centers can be negative depending on the direction moved, thus the absolute value
+        if (fabsf(_initialCenter.x - self.contentView.center.x) < (fabsf(self.frame.size.width)/5.0f)) {
+            self.contentView.center = CGPointMake(_initialCenter.x + change.x, _initialCenter.y);
+        }
     }
 }
 
 #pragma mark - Actions View
 
+// Create an action button with given label text
 -(UIButton *)createActionButtonWithText:(NSString *)actionText {
-    
-    NSLog(@"Button Created");
+
     UIButton *actionButton = [[UIButton alloc] initWithFrame:CGRectNull];
     [actionButton setTitle:actionText forState:UIControlStateNormal];
     [actionButton setTitleColor:[UIColor colorWithRed:0.0 green:1.0 blue:0.0 alpha:1.0] forState:UIControlStateNormal];
     [actionButton setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:1.0 alpha:1.0]];
+    
     return actionButton;
 }
 
+// Layout the subviews, currently the action buttons that are added as a subview to the immediate right of the
+// task cell label.
 -(void)layoutSubviews {
     
     [super layoutSubviews];
     
-    //_doneButton.frame = CGRectMake(self.bounds.size.width + 10.0f, 0, 50.0f, self.bounds.size.height);
-    //_doneButton.frame = self.frame;
-    
+    // Layout the done action button to the immediate right of the task cell label.
     _doneButton.frame = CGRectMake(self.contentView.bounds.size.width, self.contentView.bounds.origin.y, self.frame.size.width/5.0f, self.frame.size.height);
     
     //NSLog(@"Task Cell frame dimensions are. X:%f, Y:%f, Width:%f, Height:%f", self.frame.origin.x,self.frame.origin.y,self.frame.size.width,self.frame.size.height);
