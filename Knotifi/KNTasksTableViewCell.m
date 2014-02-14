@@ -17,6 +17,9 @@
     
     // Button for marking task as done
     UIButton *_doneButton;
+    
+    // Flag to indicate action menu is active on a task row
+    BOOL _actionMenuActive;
 }
 
 #pragma mark - Initializing cell
@@ -53,6 +56,10 @@
         // Add the Done Button
         _doneButton = [self createActionButtonWithText:@"Done"];
         [self.contentView addSubview:_doneButton];
+        
+        // Set action menu is active on a task row to default No
+        _actionMenuActive = NO;
+        
     }
     
     return self;
@@ -84,21 +91,46 @@
         _initialCenter = self.contentView.center;
     }
     
-    // Move the center of the cell as the gesture progresses only so far as to reveal the action buttons
+    // Move the center of the cell as the gesture progresses
     if(panRecognizer.state == UIGestureRecognizerStateChanged) {
         
         // Get the change in position
-        CGPoint change = [panRecognizer translationInView:self];
+        CGPoint change = [panRecognizer translationInView:self.contentView];
         
-        // Move the cell center only so far as to reveal the done button, basically the width
-        // of the done button
-        //NSLog(@"Cell original center is x:%f and y:%f",_initialCenter.x,_initialCenter.y);
-        NSLog(@"Cell content new center is x:%f and y:%f and width of button is:%f",self.contentView.center.x,self.contentView.center.y,self.frame.size.width/5.0f);
-        NSLog(@"Difference in the 2 positions is:%f",(self.contentView.center.x - _initialCenter.x));
-        // Frame width can be negative as per CGRect reference, so standardizing it to the absolute value
-        // Also the difference in centers can be negative depending on the direction moved, thus the absolute value
-        if (fabsf(_initialCenter.x - self.contentView.center.x) < (fabsf(self.frame.size.width)/5.0f)) {
-            self.contentView.center = CGPointMake(_initialCenter.x + change.x, _initialCenter.y);
+        NSLog(@"Change is x:%f and y:%f",change.x,change.y);
+        NSLog(@"Difference in the 2 positions is:%f and the width of the button is:%f",(self.contentView.center.x - _initialCenter.x),(self.frame.size.width)/5.0f);
+        
+        // Slide the view to the left only if the action menu is not active to take care of extra swipes
+        if (!_actionMenuActive) {
+            
+            // If the change is less than the width of the button, slide the view that much to left
+            if (fabsf(change.x) <= (self.frame.size.width)/5.0f) {
+                
+                self.contentView.center = CGPointMake(_initialCenter.x + change.x, _initialCenter.y);
+            }
+            
+            // If it's more then slide only to the width of the button and set action menu as active
+            else {
+                
+                self.contentView.center = CGPointMake(_initialCenter.x - (self.frame.size.width)/5.0f, _initialCenter.y);
+                _actionMenuActive = YES;
+                
+            }
+        }
+
+    }
+    
+    // Set the final position of the cell when the gesture has ended
+    if (panRecognizer.state == UIGestureRecognizerStateEnded) {
+        
+        // If the user has not slid to expose the full menu, revert it back to hidden
+        if (!_actionMenuActive) {
+           
+            [UIView animateWithDuration:0.2
+                             animations:^{
+                                 self.contentView.center = CGPointMake(_initialCenter.x, _initialCenter.y);
+                             }
+             ];
         }
     }
 }
