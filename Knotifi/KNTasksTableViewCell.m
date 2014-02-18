@@ -8,6 +8,13 @@
 
 #import "KNTasksTableViewCell.h"
 
+@interface KNTasksTableViewCell ()
+
+// Reset cell UI to non action view
+- (void)resetToNonActionUI;
+
+@end
+
 @implementation KNTasksTableViewCell
 
 // Instance variables
@@ -42,6 +49,7 @@
 -(id)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
+    
     if (self) {
         
         // Initialization code
@@ -57,9 +65,13 @@
         _doneButton = [self createActionButtonWithText:@"Done"];
         [self.contentView addSubview:_doneButton];
         
-        // Set action menu is active on a task row to default No
+        // Set action menu is active on a task row flag to default No
         _actionMenuActive = NO;
         
+        // Register a listener for changing the cell UI
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(changeCellUI:)
+                                                     name:@"CellUINeedsChange" object:nil];
     }
     
     return self;
@@ -126,11 +138,7 @@
         // If the user has not slid to expose the full menu, revert it back to hidden
         if (!_actionMenuActive) {
            
-            [UIView animateWithDuration:0.2
-                             animations:^{
-                                 self.contentView.center = CGPointMake(_initialCenter.x, _initialCenter.y);
-                             }
-             ];
+            [self resetToNonActionUI];
         }
     }
 }
@@ -160,13 +168,44 @@
     //NSLog(@"Task Cell frame dimensions are. X:%f, Y:%f, Width:%f, Height:%f", self.frame.origin.x,self.frame.origin.y,self.frame.size.width,self.frame.size.height);
 }
 
-#pragma mark - Unused
-
+// When a cell is selected, reset to the non action view, if needed
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
+    // If the user has slid to expose the full menu, revert it back to hidden
+    if (_actionMenuActive) {
+        
+        [self resetToNonActionUI];
+    }
+}
+
+#pragma mark - Notifications
+
+// Change the Cell UI if the appropriate notification is fired.
+- (void)changeCellUI:(NSNotification *)notification {
+    
+    // If the user has slid to expose the full menu, revert it back to hidden
+    if (_actionMenuActive) {
+        [self resetToNonActionUI];
+    }
+}
+
+#pragma mark - Utilities
+
+// Reset cell UI to non action view
+- (void)resetToNonActionUI {
+    
+    // Reset the content view to original center
+    [UIView animateWithDuration:0.2
+                     animations:^{
+                         self.contentView.center = CGPointMake(_initialCenter.x, _initialCenter.y);
+                     }
+     ];
+    
+    // Reset action menu is active on a task row flag to default No
+    _actionMenuActive = NO;
 }
 
 @end

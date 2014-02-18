@@ -268,7 +268,9 @@
     }
 }
 
-// When a row (option) is selected on the tasks nav table, update the tasks list table to show corresponding tasks. Also update the currently selected task nav option.
+// When a row (option) is selected on the tasks nav table, update the tasks list table to show corresponding tasks.
+// Also update the currently selected task nav option. For both the tasks nav and list table, on selection of any row,
+// update UI appropriately.
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     // If its the tasks nav table
@@ -281,6 +283,10 @@
         // Reload the tasks list table to reflect the tasks
         [self.tasksListTable reloadData];
     }
+    
+    // For both the tasks nav and list table, on selection of any row, issue a notification to
+    // change the cell UI appropriately
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"CellUINeedsChange" object:self];
 }
 
 // Query the data store based on the task navigation row selected and set the results controller.
