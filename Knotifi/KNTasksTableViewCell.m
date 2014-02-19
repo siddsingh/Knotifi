@@ -82,13 +82,17 @@
 // Track only right to left pan. TO DO: Currently tracking only horizontal. Implement fully.
 - (BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)gestureRecognizer {
     
-    // Get the change in position
-    CGPoint change = [gestureRecognizer translationInView:[self superview]];
-    
-    // Check to see if pan is horizontal and not vertical.
-    if (fabsf(change.x) > fabsf(change.y)) {
+    // Ony if the gesture is a Pan Gesture
+    if ([gestureRecognizer isMemberOfClass:[UIPanGestureRecognizer class]]) {
         
-        return YES;
+        // Get the change in position
+        CGPoint change = [gestureRecognizer translationInView:[self superview]];
+        
+        // Check to see if pan is horizontal and not vertical.
+        if (fabsf(change.x) > fabsf(change.y)) {
+            
+            return YES;
+        }
     }
     
     return NO;
@@ -97,13 +101,21 @@
 // Respond to the right to left pan by revealing the action buttons.
 - (void)handleTaskPan:(UIPanGestureRecognizer *)panRecognizer {
     
-    // Capture the initial center of the cell when gesture has started
+    // Processing for when gesture has started
     if(panRecognizer.state == UIGestureRecognizerStateBegan) {
         
-        _initialCenter = self.contentView.center;
+        // Record the center only if the action menu is not active
+        if (!_actionMenuActive) {
+            
+            _initialCenter = self.contentView.center;
+        }
+        
+        // Issue a notification to change the cell UI which will reset the action menu if it's exposed
+        // on any other cell.
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"CellUINeedsChange" object:self];
     }
     
-    // Move the center of the cell as the gesture progresses
+    // Processing as the gesture progresses
     if(panRecognizer.state == UIGestureRecognizerStateChanged) {
         
         // Get the change in position
@@ -188,6 +200,7 @@
     
     // If the user has slid to expose the full menu, revert it back to hidden
     if (_actionMenuActive) {
+        
         [self resetToNonActionUI];
     }
 }
