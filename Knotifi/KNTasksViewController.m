@@ -192,23 +192,6 @@
 
 #pragma mark - Nav and List Table
 
-// Return headers for the table views
--(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    
-    UITableViewCell *headerCell = nil;
-    
-    // If its the tasks nav table
-    if(tableView == self.tasksNavTable) {
-        headerCell = [tableView dequeueReusableCellWithIdentifier:@"TasksNavHeader"];
-    }
-    // If its the task list table
-    else {
-        headerCell = [tableView dequeueReusableCellWithIdentifier:@"TaskHeader"];
-    }
-    
-    return headerCell;
-}
-
 // Return number of sections in the table views
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -244,6 +227,10 @@
         
         // Show the to do nav option from the array for this.
         [[cell textLabel] setText:[self.taskNavOptions objectAtIndex:indexPath.row]];
+        
+        // TO DO: UI adjustment because IB doesn't respect entered value
+        // Set header cell background to view background R-65,G-65,B-65
+        cell.backgroundColor = [UIColor colorWithRed:65.0f/255.0f green:65.0f/255.0f blue:65.0f/255.0f alpha:1.0f];
         
         return cell;
     }
@@ -352,5 +339,26 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+// Return headers for the table views
+/*-(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    
+    UITableViewCell *headerCell = nil;
+    
+    // If its the tasks nav table
+    if(tableView == self.tasksNavTable) {
+        headerCell = [tableView dequeueReusableCellWithIdentifier:@"TasksNavHeader"];
+    }
+    // If its the task list table
+    else {
+        headerCell = [tableView dequeueReusableCellWithIdentifier:@"TaskHeader"];
+    }
+    
+    // TO DO: UI adjustment because IB doesn't respect entered value
+    // Set header cell background to view background R-65,G-65,B-65
+    headerCell.backgroundColor = [UIColor colorWithRed:65.0f/255.0f green:65.0f/255.0f blue:65.0f/255.0f alpha:1.0f];
+    
+    return headerCell;
+}*/
 
 @end
