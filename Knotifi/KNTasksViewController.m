@@ -341,7 +341,7 @@
 }
 
 // Return headers for the table views
-/*-(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+/* -(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
     UITableViewCell *headerCell = nil;
     
@@ -359,6 +359,6 @@
     headerCell.backgroundColor = [UIColor colorWithRed:65.0f/255.0f green:65.0f/255.0f blue:65.0f/255.0f alpha:1.0f];
     
     return headerCell;
-}*/
+} */
 
 @end
