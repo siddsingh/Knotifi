@@ -37,7 +37,10 @@
 // Handle the swipe to left action on the task input text view
 - (IBAction)handleTaskInputSwipe:(UISwipeGestureRecognizer *)sender;
 
-// On performing the Add Task action, insert task into the data store and display it in the task list table.
+// The Add task (done) button
+@property (weak, nonatomic) IBOutlet UIButton *addTaskButton;
+
+// On performing the Add Task action (hitting the done button), insert task into the data store and display it in the task list table.
 - (IBAction)addTask:(id)sender;
 
 // Text field to input task summary description

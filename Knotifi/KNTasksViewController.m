@@ -75,6 +75,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(taskStoreChanged:)
                                                  name:@"TaskStoreUpdated" object:nil];
+    
+    // Register keyboard dismissed listener
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasDismissed:)                                                 name:UIKeyboardWillHideNotification object:nil];
 }
 
 #pragma mark - Add Task UI
@@ -105,6 +109,32 @@
     return YES;
 }
 
+// On dismissing the keyboard, the action corresponding to the input field from which the
+// keyboard was dismissed should take place.
+- (void)keyboardWasDismissed:(NSNotification *)notification {
+    
+    // If the input field is the task summary description and the description is valid,
+    // create the task
+    if (self.taskSummaryDescField.isFirstResponder) {
+        
+        // Check to see if entered summary description of the task is valid. If Yes
+        if ([self taskSummaryDescValid:self.taskSummaryDescField.text]) {
+            
+            // Add task to the data store
+            [self addTaskToDataStore:self.taskSummaryDescField.text];
+            
+            // Requery the data store to include the new task
+            [self queryTasksForSelectedNavOption:self.currentTaskNavOption];
+            
+            // Fire the list of tasks changed notification
+            [self sendTasksChangeNotification];
+            
+            // Set task entry UI format to default
+            [self resetTaskEntryUIFormat];
+        }
+    }
+}
+
 // Handle the swipe to left action on the task input text view by toggling the
 // task type and showing the appropriate add message with color coding
 - (IBAction)handleTaskInputSwipe:(UISwipeGestureRecognizer *)sender {
@@ -115,17 +145,26 @@
     // Show the appropriate message with the correct color coding
     if (self.taskTypeIsNow) {
         
+        // Change the prompt text, color
         [self.taskSummaryDescField setTextColor:[UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:1.0]];
-        [self.taskSummaryDescField setText:@"          ADD A TO DO"];
+        [self.taskSummaryDescField setText:@"TAP TO ADD A TO DO"];
+        
+        // Change the add task (Done) button color
+        [self.addTaskButton setBackgroundColor:[UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:1.0]];
+        
     }
     else {
         
+        // Change the prompt text, color
         [self.taskSummaryDescField setTextColor:[UIColor colorWithRed:1.0 green:0.5 blue:0.0 alpha:1.0]];
-        [self.taskSummaryDescField setText:@"          ADD A TO DO FOR LATER"];
+        [self.taskSummaryDescField setText:@"TAP TO ADD A TO DO FOR LATER"];
+        
+        // Change the add task (Done) button color
+        [self.addTaskButton setBackgroundColor:[UIColor colorWithRed:1.0 green:0.5 blue:0.0 alpha:1.0]];
     }
 }
 
-// On performing the Add Task action, insert task into the data store and display it in the task list table.
+// On performing the Add Task action (hitting the done button), insert task into the data store and display it in the task list table.
 - (IBAction)addTask:(id)sender {
     
     // Check to see if entered summary description of the task is valid. If Yes
@@ -149,7 +188,10 @@
 - (BOOL) taskSummaryDescValid:(NSString *)taskSummaryDescription {
     
     // If the entered summary description is the same as the default text
-    if ([taskSummaryDescription isEqualToString:@"          ADD A TO DO"]) {
+    if ([taskSummaryDescription isEqualToString:@"TAP TO ADD A TO DO"]) {
+        return NO;
+    }
+    if ([taskSummaryDescription isEqualToString:@"TAP TO ADD A TO DO FOR LATER"]) {
         return NO;
     }
     
@@ -182,9 +224,12 @@
     // Dismiss keyboard from the task entry field
     [self.taskSummaryDescField resignFirstResponder];
     
-    // Set text to default initial state
+    // Set text to default initial state, color
     [self.taskSummaryDescField setTextColor:[UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:1.0]];
-    [self.taskSummaryDescField setText:@"          ADD A TO DO"];
+    [self.taskSummaryDescField setText:@"TAP TO ADD A TO DO"];
+    
+    // Set the Add Task (done) button to default color
+    [self.addTaskButton setBackgroundColor:[UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:1.0]];
     
     // Set type of task being created to Now as default
     self.taskTypeIsNow = YES;

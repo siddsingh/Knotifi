@@ -16,12 +16,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="          ADD A TO DO" borderStyle="roundedRect" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oc7-Lt-rXL">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="TAP TO ADD A TO DO" borderStyle="roundedRect" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oc7-Lt-rXL">
                                 <rect key="frame" x="13" y="40" width="661" height="30"/>
                                 <color key="backgroundColor" red="0.15355383831521741" green="0.15355383831521741" blue="0.15355383831521741" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
@@ -186,6 +186,7 @@
                         <gestureRecognizers/>
                     </view>
                     <connections>
+                        <outlet property="addTaskButton" destination="gVV-6j-iox" id="pRn-q9-erM"/>
                         <outlet property="taskSummaryDescField" destination="oc7-Lt-rXL" id="lVL-hL-p8i"/>
                         <outlet property="tasksListTable" destination="hva-0I-a4S" id="D44-gk-Rrd"/>
                         <outlet property="tasksNavTable" destination="ljB-Ap-PsR" id="iEc-uu-wSn"/>
